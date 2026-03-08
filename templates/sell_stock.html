@@ -1,0 +1,226 @@
+<!-- templates/sell_stock.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Sell Stock - Stocker</title>
+
+  <!-- Favicons -->
+  <link href="{{ url_for('static', filename='img/logo stocker.png') }}" rel="icon">
+
+  <!-- CSS -->
+  <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+  <link href="{{ url_for('static', filename='vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
+  <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet">
+
+</head>
+
+
+<body>
+
+<header class="header d-flex align-items-center fixed-top">
+
+  <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
+
+    <a class="logo d-flex align-items-center">
+      <img src="{{ url_for('static', filename='img/logo stocker.png') }}">
+      <h1 class="sitename">STOCKER</h1>
+      <span>.</span>
+    </a>
+
+    <nav class="navmenu d-flex align-items-center">
+
+      <ul class="d-flex align-items-center mb-0">
+
+        <li>
+          <a href="{{ url_for('dashboard_trader') }}">Dashboard</a>
+        </li>
+
+        <li>
+          <a href="{{ url_for('service04') }}">Stocks</a>
+        </li>
+
+      </ul>
+
+      <a href="{{ url_for('logout') }}" class="btn btn-danger ms-4 px-4 py-2 rounded">
+        Logout
+      </a>
+
+    </nav>
+
+  </div>
+
+</header>
+
+
+
+<div class="container py-5" style="margin-top:100px;">
+
+  <div class="row mb-4">
+
+    <div class="col-12">
+
+      <h2>Sell Stock: {{ stock.symbol }}</h2>
+
+      <p>
+        {{ stock.name }} - Current Price: ₹{{ stock.price }}
+      </p>
+
+      <p>
+        You currently own: 
+        <b>{{ portfolio_entry.quantity }}</b> shares 
+        (avg. price: ₹{{ portfolio_entry.average_price }})
+      </p>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="row">
+
+    <div class="col-md-6 offset-md-3">
+
+      <div class="card shadow">
+
+        <div class="card-body">
+
+          <form method="POST">
+
+            <div class="mb-3">
+
+              <label class="form-label">Quantity to Sell</label>
+
+              <input
+                type="number"
+                class="form-control"
+                id="quantity"
+                name="quantity"
+                min="1"
+                max="{{ portfolio_entry.quantity }}"
+                required
+              >
+
+            </div>
+
+
+
+            <div class="mb-3">
+
+              <label>Estimated Proceeds</label>
+
+              <div class="input-group">
+
+                <span class="input-group-text">₹</span>
+
+                <input
+                  type="text"
+                  class="form-control"
+                  id="total"
+                  readonly
+                >
+
+              </div>
+
+            </div>
+
+
+
+            <div class="mb-3">
+
+              <label>Estimated Profit / Loss</label>
+
+              <div class="input-group">
+
+                <span class="input-group-text">₹</span>
+
+                <input
+                  type="text"
+                  class="form-control"
+                  id="profitLoss"
+                  readonly
+                >
+
+              </div>
+
+            </div>
+
+
+
+            <div class="d-grid gap-2">
+
+              <button type="submit" class="btn btn-danger">
+                Confirm Sale
+              </button>
+
+              <a href="{{ url_for('dashboard_trader') }}" class="btn btn-secondary">
+                Cancel
+              </a>
+
+            </div>
+
+          </form>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+
+<script>
+
+const quantityInput = document.getElementById("quantity");
+const totalField = document.getElementById("total");
+const profitLossField = document.getElementById("profitLoss");
+
+const currentPrice = parseFloat("{{ stock.price }}");
+const avgPrice = parseFloat("{{ portfolio_entry.average_price }}");
+
+quantityInput.addEventListener("input", function () {
+
+    const quantity = parseInt(this.value);
+
+    if (!quantity || quantity <= 0) {
+
+        totalField.value = "";
+        profitLossField.value = "";
+
+        return;
+
+    }
+
+    const total = quantity * currentPrice;
+
+    totalField.value = total.toFixed(2);
+
+    const profitLoss = quantity * (currentPrice - avgPrice);
+
+    profitLossField.value = profitLoss.toFixed(2);
+
+    profitLossField.classList.remove("text-success", "text-danger");
+
+    if (profitLoss >= 0) {
+        profitLossField.classList.add("text-success");
+    } else {
+        profitLossField.classList.add("text-danger");
+    }
+
+});
+
+</script>
+
+
+</body>
+</html>

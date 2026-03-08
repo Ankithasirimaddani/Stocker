@@ -1,0 +1,182 @@
+<!-- templates/service-details-3.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>Portfolio Management - Stocker</title>
+
+  <!-- Favicons -->
+  <link href="{{ url_for('static', filename='img/logo stocker.png') }}" rel="icon" />
+
+  <!-- Fonts and CSS -->
+  <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" />
+  <link href="{{ url_for('static', filename='vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet" />
+  <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet" />
+  
+  <style>
+    /* Additional custom styles */
+    .content-section {
+      margin-top: 100px; /* Add margin to prevent overlap with header */
+    }
+    .curved-container {
+      background-color: #f8f9fa; /* Light background */
+      border-radius: 20px; /* Curved corners */
+      padding: 30px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .logout-button {
+      margin-left: auto; /* Push it to right */
+    }
+    .profit {
+      color: green;
+      font-weight: bold;
+    }
+    .loss {
+      color: red;
+      font-weight: bold;
+    }
+    .sector-tag {
+      font-size: 0.8rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 0.25rem;
+      background-color: #e9ecef;
+    }
+  </style>
+</head>
+<body>
+
+<header id="header" class="header d-flex align-items-center fixed-top">
+  <div class="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
+
+    <a  class="logo d-flex align-items-center me-auto me-lg-0">
+      <img src="{{ url_for('static', filename='img/logo stocker.png') }}" alt="">
+      <h1 class="sitename">STOCKER</h1>
+      <span>.</span>
+    </a>
+
+    <nav id="navmenu" class="navmenu d-flex align-items-center">
+      <ul class="d-flex align-items-center mb-0">
+        <li><a href="{{ url_for('dashboard_admin') }}">Dashboard</a></li>
+        <li><a href="{{ url_for('service01') }}">View Traders</a></li>
+        <li><a href="{{ url_for('service02') }}">View Transactions</a></li>
+      </ul>
+      <a href="{{ url_for('logout') }}" class="btn btn-danger ms-4 px-4 py-2 rounded">Logout</a>  
+    </nav>
+
+    <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+  </div>
+</header>
+
+<main class="container content-section">
+  <div class="curved-container">
+
+    <div class="text-center mb-4">
+      <i class="bi bi-graph-up-arrow display-4 text-success mb-2"></i>
+      <h2>Trader Portfolio Management</h2>
+      <p class="text-muted">View and manage all trader portfolios across the platform</p>
+    </div>
+
+    <div class="table-responsive">
+      <table class="table table-striped table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>Trader</th>
+                <th>Stock</th>
+                <th>Symbol</th>
+                <th>Sector</th>
+                <th>Quantity</th>
+                <th>Avg. Buy Price</th>
+                <th>Current Price</th>
+                <th>Market Value</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for portfolio in portfolios %}
+            <tr>
+                <td>{{ portfolio.user.username }}</td>
+                <td>{{ portfolio.stock.name }}</td>
+                <td>{{ portfolio.stock.symbol }}</td>
+                <td><span class="sector-tag">{{ portfolio.stock.sector }}</span></td>
+                <td>{{ portfolio.quantity }}</td>
+                <td>₹{{ "%.2f"|format(portfolio.average_price) }}</td>
+                <td>₹{{ "%.2f"|format(portfolio.stock.price) }}</td>
+                <td>₹{{ "%.2f"|format(portfolio.stock.price * portfolio.quantity) }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    
+    <div class="mt-4">
+      <div class="row">
+        <div class="col-md-4">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Total Portfolio Value</h5>
+              <p class="card-text">
+                <span class="display-6">₹{{ "%.2f"|format(total_portfolio_value) }}</span>
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Total Traders with Portfolios</h5>
+              <p class="card-text">
+                <span class="display-6">{{ portfolios|map(attribute='user_id')|unique|list|length }}</span>
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Total Stocks Held</h5>
+              <p class="card-text">
+                <span class="display-6">{{ portfolios|map(attribute='stock_id')|unique|list|length }}</span>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="mt-4">
+      <div class="card">
+        <div class="card-header bg-primary text-white">
+          <h5 class="mb-0">Sector Distribution</h5>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            {% set sectors = {} %}
+            {% for portfolio in portfolios %}
+              {% set sector = portfolio.stock.sector %}
+              {% if sector in sectors %}
+                {% set _ = sectors.update({sector: sectors[sector] + (portfolio.stock.price * portfolio.quantity)}) %}
+              {% else %}
+                {% set _ = sectors.update({sector: portfolio.stock.price * portfolio.quantity}) %}
+              {% endif %}
+            {% endfor %}
+            
+            {% for sector, value in sectors.items() %}
+            <div class="col-md-3 mb-3">
+              <div class="card h-100">
+                <div class="card-body">
+                  <h6 class="card-title">{{ sector }}</h6>
+                  <p class="card-text">₹{{ "%.2f"|format(value) }}</p>
+                  
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+</body>
+</html>

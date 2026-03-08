@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Buy Stock - Stocker</title>
+
+<link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+
+<style>
+
+body{
+background:#f5f5f5;
+}
+
+.container{
+margin-top:120px;
+max-width:500px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h2 class="mb-3">Buy Stock: {{ stock.symbol }}</h2>
+
+<p><strong>{{ stock.name }}</strong></p>
+
+<p>Current Price: ₹{{ stock.price }}</p>
+
+<div class="card shadow p-4">
+
+<form method="POST">
+
+<div class="mb-3">
+
+<label class="form-label">Quantity</label>
+
+<input
+type="number"
+class="form-control"
+id="quantity"
+name="quantity"
+min="1"
+required>
+
+</div>
+
+<div class="mb-3">
+
+<label class="form-label">Estimated Total</label>
+
+<input
+type="text"
+class="form-control"
+id="total"
+readonly>
+
+</div>
+
+<button type="submit" class="btn btn-success w-100">
+Confirm Purchase
+</button>
+
+<a href="{{ url_for('dashboard_trader') }}"
+class="btn btn-secondary w-100 mt-2">
+Cancel
+</a>
+
+</form>
+
+</div>
+
+</div>
+
+
+<script>
+
+const price = parseFloat("{{ stock.price }}");
+
+document.getElementById("quantity").addEventListener("input", function(){
+
+let qty = parseInt(this.value) || 0;
+
+let total = qty * price;
+
+document.getElementById("total").value = "₹" + total.toFixed(2);
+
+});
+
+</script>
+
+</body>
+
+</html>

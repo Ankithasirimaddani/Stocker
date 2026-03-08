@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>Our Services - Stocker</title>
+
+  <!-- Favicons -->
+  <link href="{{ url_for('static', filename='img/logo stocker.png') }}" rel="icon" />
+
+  <!-- CSS -->
+  <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" />
+  <link href="{{ url_for('static', filename='vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet" />
+  <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet" />
+
+  <style>
+    .content-section {
+      margin-top: 100px;
+    }
+
+    .curved-container {
+      background-color: #f8f9fa;
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+  </style>
+
+</head>
+
+<body>
+
+<header class="header d-flex align-items-center fixed-top">
+  <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
+
+    <a class="logo d-flex align-items-center">
+      <img src="{{ url_for('static', filename='img/logo stocker.png') }}">
+      <h1 class="sitename">STOCKER</h1>
+      <span>.</span>
+    </a>
+
+    <nav class="navmenu d-flex align-items-center">
+      <ul class="d-flex align-items-center mb-0">
+        <li><a href="{{ url_for('dashboard_trader') }}">Dashboard</a></li>
+        <li><a href="{{ url_for('service04') }}">Browse Stocks</a></li>
+      </ul>
+
+      <a href="{{ url_for('logout') }}" class="btn btn-danger ms-4 px-4 py-2 rounded">Logout</a>
+    </nav>
+
+  </div>
+</header>
+
+
+<main class="container content-section">
+
+<div class="container py-5">
+
+<div class="row mb-4">
+<div class="col-12">
+
+<h2>My Portfolio</h2>
+
+<p>Total Portfolio Value:
+<strong>₹{{ '{:,.2f}'.format(total_value) }}</strong>
+</p>
+
+</div>
+</div>
+
+
+<!-- ================= HOLDINGS ================= -->
+
+<div class="row mb-5">
+<div class="col-12">
+
+<div class="card shadow">
+
+<div class="card-header bg-primary text-white">
+<h4 class="mb-0">Current Holdings</h4>
+</div>
+
+<div class="card-body">
+
+{% if portfolio %}
+
+<div class="table-responsive">
+
+<table class="table table-hover">
+
+<thead class="thead-light">
+<tr>
+<th>Symbol</th>
+<th>Name</th>
+<th>Quantity</th>
+<th>Avg Price</th>
+<th>Current Price</th>
+<th>Current Value</th>
+<th>Profit/Loss</th>
+<th>Actions</th>
+</tr>
+</thead>
+
+<tbody>
+
+{% for item in portfolio %}
+
+{% set current_value = item.quantity * item.stock.price %}
+{% set purchase_value = item.quantity * item.average_price %}
+{% set profit_loss = current_value - purchase_value %}
+{% set profit_loss_percent = (profit_loss / purchase_value * 100) if purchase_value > 0 else 0 %}
+
+<tr>
+
+<td>{{ item.stock.symbol }}</td>
+
+<td>{{ item.stock.name }}</td>
+
+<td>{{ item.quantity }}</td>
+
+<td>₹{{ '{:.2f}'.format(item.average_price) }}</td>
+
+<td>₹{{ '{:.2f}'.format(item.stock.price) }}</td>
+
+<td>₹{{ '{:,.2f}'.format(current_value) }}</td>
+
+<td class="{{ 'text-success' if profit_loss >= 0 else 'text-danger' }}">
+
+₹{{ '{:,.2f}'.format(profit_loss) }}
+
+({{ '{:.2f}'.format(profit_loss_percent) }}%)
+
+</td>
+
+<td>
+
+<a href="{{ url_for('buy_stock', stock_id=item.stock.id) }}"
+class="btn btn-sm btn-success">
+Buy More
+</a>
+
+<a href="{{ url_for('sell_stock', stock_id=item.stock.id) }}"
+class="btn btn-sm btn-danger">
+Sell
+</a>
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+</table>
+
+</div>
+
+{% else %}
+
+<div class="alert alert-info">
+You don't have any stocks yet.
+<a href="{{ url_for('service04') }}">Browse stocks</a>
+</div>
+
+{% endif %}
+
+</div>
+</div>
+</div>
+</div>
+
+
+<!-- ================= TRANSACTIONS ================= -->
+
+<div class="row">
+<div class="col-12">
+
+<div class="card shadow">
+
+<div class="card-header bg-secondary text-white">
+<h4 class="mb-0">Transaction History</h4>
+</div>
+
+<div class="card-body">
+
+{% if transactions %}
+
+<div class="table-responsive">
+
+<table class="table table-hover">
+
+<thead>
+<tr>
+<th>Date</th>
+<th>Action</th>
+<th>Symbol</th>
+<th>Quantity</th>
+<th>Price</th>
+<th>Total</th>
+<th>Status</th>
+</tr>
+</thead>
+
+<tbody>
+
+{% for transaction in transactions %}
+
+<tr>
+
+<td>
+{{ transaction.transaction_date.split('T')[0] }}
+{{ transaction.transaction_date.split('T')[1][:8] }}
+</td>
+
+<td class="{{ 'text-success' if transaction.action == 'buy' else 'text-danger' }}">
+{{ transaction.action.upper() }}
+</td>
+
+<td>{{ transaction.stock.symbol }}</td>
+
+<td>{{ transaction.quantity }}</td>
+
+<td>₹{{ '{:.2f}'.format(transaction.price) }}</td>
+
+<td>₹{{ '{:,.2f}'.format(transaction.quantity * transaction.price) }}</td>
+
+<td>{{ transaction.status }}</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+</table>
+
+</div>
+
+{% else %}
+
+<div class="alert alert-info">
+No transactions yet.
+<a href="{{ url_for('service04') }}">Buy stocks</a>
+</div>
+
+{% endif %}
+
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+
+</main>
+
+</body>
+</html>

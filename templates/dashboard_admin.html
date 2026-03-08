@@ -1,0 +1,77 @@
+<!-- templates/dashboard_admin.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>Admin Dashboard - Stocker</title>
+
+  <link href="{{ url_for('static', filename='img/logo stocker.png') }}" rel="icon" />
+  <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" />
+  <link href="{{ url_for('static', filename='vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet" />
+  <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet" />
+</head>
+<body>
+
+<header id="header" class="header d-flex align-items-center fixed-top">
+  <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
+    <a class="logo d-flex align-items-center me-auto me-lg-0">
+      <img src="{{ url_for('static', filename='img/logo stocker.png') }}" alt="">
+      <h1 class="sitename">STOCKER</h1><span style="color: #3fb61a">.</span>
+    </a>
+    <nav id="navmenu" class="navmenu">
+      <ul class="d-flex align-items-center mb-0">  
+        <li class="dropdown">
+          <a href="#"><span>Admin Services</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+          <ul>
+            <li><a href="{{ url_for('service01') }}">View Traders</a></li>
+            <li><a href="{{ url_for('service02') }}">View Transactions</a></li>
+            <li><a href="{{ url_for('service03') }}">View Portfolios</a></li>
+          </ul>
+        </li>
+        <li><a href="{{ url_for('logout') }}" class="btn btn-danger ms-4 px-4 py-2 rounded">Logout</a></li>
+      </ul>
+      <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+    </nav>
+  </div>
+</header>
+
+<section id="services" class="services section" style="padding-top: 100px;">
+  <div class="container section-title" data-aos="fade-in">
+    <p style="color: #000000;">Admin Services</p>
+  </div>
+
+  <div class="container">
+    <div class="row gy-4">
+      <div class="col-lg-4 col-md-4" data-aos="fade-up" data-aos-delay="100">
+        <div class="service-item position-relative" style="background-color: rgba(255, 255, 255, 0.5); color: white;">
+          <div class="icon"><i class="bi bi-people"></i></div>
+          <a class="stretched-link" href="{{ url_for('service01') }}"></a>
+          <h3>View Traders</h3>
+          <p style="color: #000000">Manage all registered traders in the platform.</p>
+        </div>
+      </div>
+
+      <div class="col-lg-4 col-md-4" data-aos="fade-up" data-aos-delay="200">
+        <div class="service-item position-relative" style="background-color: rgba(255, 255, 255, 0.5); color: white;">
+          <div class="icon"><i class="bi bi-file-earmark-text"></i></div>
+          <a class="stretched-link" href="{{ url_for('service02') }}"></a>
+          <h3>View Transactions</h3>
+          <p style="color: #000000">Monitor all trade transactions on the platform.</p>
+        </div>
+      </div>
+
+      <div class="col-lg-4 col-md-4" data-aos="fade-up" data-aos-delay="300">
+        <div class="service-item position-relative" style="background-color: rgba(255, 255, 255, 0.5); color: white;">
+          <div class="icon"><i class="bi bi-briefcase"></i></div>
+          <a class="stretched-link" href="{{ url_for('service03') }}"></a>
+          <h3>View Portfolios</h3>
+          <p style="color: #000000">Monitor all trader's portfolios on the platform.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>

@@ -1,0 +1,111 @@
+<!-- templates/service-details-1.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>Our Services - Stocker</title>
+
+  <!-- Favicons -->
+  <link href="{{ url_for('static', filename='img/logo stocker.png') }}" rel="icon" />
+
+  <!-- Fonts and CSS -->
+  <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" />
+  <link href="{{ url_for('static', filename='vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet" />
+  <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet" />
+  
+  <style>
+    /* Additional custom styles */
+    .content-section {
+      margin-top: 100px; /* Add margin to prevent overlap with header */
+    }
+    .curved-container {
+      background-color: #f8f9fa; /* Light background */
+      border-radius: 20px; /* Curved corners */
+      padding: 30px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .logout-button {
+      margin-left: auto; /* Push it to right */
+    }
+  </style>
+
+</head>
+<body>
+
+<header id="header" class="header d-flex align-items-center fixed-top">
+  <div class="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
+
+    <a  class="logo d-flex align-items-center me-auto me-lg-0">
+      <img src="{{ url_for('static', filename='img/logo stocker.png') }}" alt="">
+      <h1 class="sitename">STOCKER</h1>
+      <span>.</span>
+    </a>
+
+    <nav id="navmenu" class="navmenu d-flex align-items-center">
+      <ul class="d-flex align-items-center mb-0">
+        <li><a href="{{ url_for('dashboard_admin') }}">Dashboard</a></li>
+        <li><a href="{{ url_for('service02') }}">View Transactions</a></li>
+        <li><a href="{{ url_for('service03') }}">View Portfolios</a></li>
+      </ul>
+      <a href="{{ url_for('logout') }}" class="btn btn-danger ms-4 px-4 py-2 rounded">Logout</a>  
+    </nav>
+
+    <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+  </div>
+</header>
+
+<main class="container content-section">
+  <div class="curved-container">
+
+    <div class="text-center mb-4">
+      <h2>Trader Details</h2>
+    </div>
+
+    <div class="table-responsive">
+      <table class="table table-striped table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>Trader ID</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Portfolio Value</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for trader in traders %}
+            <tr>
+                <td>{{ trader.id }}</td>
+                <td>{{ trader.username }}</td>
+                <td>{{ trader.email }}</td>
+                <td>
+                  ₹{{ trader.total_portfolio_value }}
+                </td>
+                <td>
+                  <form action="{{ url_for('delete_trader', trader_id=trader.id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this trader?');">
+                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                  </form>
+                  <a href="service03" class="btn btn-sm btn-info ms-1">View Portfolio</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    </div>
+    
+    <div class="mt-4">
+      <div class="card bg-light">
+        <div class="card-body">
+          <h5 class="card-title">Total Registered Traders</h5>
+          <p class="card-text">
+            <span class="display-6">{{ traders|length }}</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+</body>
+</html>

@@ -1,0 +1,199 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stocker - Cloud-Based Stock Trading Platform</title>
+  
+  <!-- Favicons -->
+  <link href="{{ url_for('static', filename='img/logo stocker.png') }}" rel="icon" />
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&family=Poppins&display=swap" rel="stylesheet">
+
+  <!-- Vendor & Main CSS -->
+  <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+  <link href="{{ url_for('static', filename='vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
+  <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet">
+
+</head>
+
+<!-- Body -->
+<body class="index-page">
+  <header id="header" class="header d-flex align-items-center fixed-top">
+    <div class="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
+      <a href="{{ url_for('index') }}" class="logo d-flex align-items-center me-auto me-lg-0">
+        <img src="{{ url_for('static', filename='img/logo stocker.png') }}" alt="">
+        <h1 class="sitename">STOCKER</h1>
+        <span>.</span>
+      </a>
+      <nav id="navmenu" class="navmenu">
+        <ul>
+          <li><a href="#hero" class="active">Home</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#services">Services</a></li>
+        </ul>
+        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+      </nav>
+      {% if session.get('user') %}
+        <a class="btn-getstarted" href="{{ url_for('logout') }}">Logout</a>
+      {% else %}
+        <a class="btn-getstarted" href="{{ url_for('login') }}">Login/Signup</a>
+      {% endif %}
+    </div>
+  </header>
+
+  <main class="main">
+    <!-- Hero Section -->
+    <section id="hero" class="hero section dark-background">
+      <img src="{{ url_for('static', filename='img/hero_image.jpeg') }}" alt="" data-aos="fade-in">
+      <div class="container">
+        <div class="row justify-content-center text-center" data-aos="fade-up" data-aos-delay="100">
+          <div class="col-xl-6 col-lg-8">
+            <p><b>Cloud-native trading, fast and secure</b></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about section">
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+        <div class="row gy-4">
+          <div class="col-lg-6 order-1 order-lg-2">
+            <img src="{{ url_for('static', filename='img/about.jpg') }}" class="img-fluid" alt="">
+          </div>
+          <div class="col-lg-6 order-2 order-lg-1 content">
+            <h3>Empowering your trades</h3>
+            <p class="fst-italic">Experience seamless stock trading</p>
+            <p>Stocker, based in Hyderabad, offers a cloud-native stock trading platform that revolutionizes the way you trade.
+              Our service provides real-time stock transactions, portfolio management, and market insights, all designed to 
+              empower your trading experience. With a robust backend built on Flask and AWS EC2, along with secure data storage 
+              in Amazon DynamoDB, our platform delivers high performance and dynamic scalability. 
+              Enjoy features like real-time trade execution and secure user authentication, 
+              ensuring you have the tools needed for successful investing.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="services section" >
+      <!-- Section Title -->
+      <div class="container section-title" data-aos="fade-in">
+        <h2 style="color: #000000;"><b>Services</b></h2>
+        <p style="color: #000000;">Check our Services</p>
+      </div><!-- End Section Title -->
+      <div class="container">
+        <div class="row gy-4">
+          <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+            <div class="service-item position-relative" style="background-color: rgba(255, 255, 255, 0.5); color: white;">
+              <div class="icon">
+                <i class="bi bi-activity"></i>
+              </div>
+              <a class="stretched-link" href="{{ url_for('login') }}"></a>
+                <h3>Secure user authentication</h3>
+              </a>
+              <p style="color: #000000">Protect your trading account with advanced security features.</p>
+            </div>
+          </div><!-- End Service Item -->
+          <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+            <div class="service-item position-relative" style="background-color: rgba(255, 255, 255, 0.5); color: white;">
+              <div class="icon">
+                <i class="bi bi-broadcast"></i>
+              </div>
+              <a class="stretched-link" href="{{ url_for('login') }}"></a>
+                <h3>Real-time trade execution</h3>
+              </a>
+              <p style="color: #000000">Experience lightning-fast trade execution for optimal market opportunities.</p>
+            </div>
+          </div><!-- End Service Item -->
+
+          <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+            <div class="service-item position-relative" style="background-color: rgba(255, 255, 255, 0.5); color: white;">
+              <div class="icon">
+                <i class="bi bi-easel"></i>
+              </div>
+              <a class="stretched-link" href="{{ url_for('login') }}"></a>
+                <h3>Portfolio tracking</h3>
+              </a>
+              <p style="color: #000000">Monitor your investments effortlessly with our portfolio tracking tool.</p>
+            </div>
+          </div><!-- End Service Item -->
+        </div>
+      </div>
+    </section><!-- /Services Section -->
+  </main>
+  <footer id="footer" class="footer dark-background">
+    <div class="footer-top">
+      <div class="container">
+        <div class="row gy-4">
+          <div class="col-lg-4 col-md-6 footer-about">
+            <a href="index.html" class="logo d-flex align-items-center">
+              <span class="sitename">Stocker</span>
+            </a>
+            <div class="footer-contact pt-3">
+              <p>Gachibowli</p>
+              <p>Hyderabad, Telangana 500032</p>
+              <p class="mt-3"><strong>Phone:</strong> <span>+91 XXXXX XXXXX</span></p>
+              <p><strong>Email:</strong> <span>smartbridge@example.com</span></p>
+            </div>
+          </div>
+          <div class="col-lg-2 col-md-3 footer-links">
+            <h4>Useful Links</h4>
+            <ul>
+              <li><i class="bi bi-chevron-right"></i> <a href="#hero"> Home</a></li>
+              <li><i class="bi bi-chevron-right"></i> <a href="#about"> About us</a></li>
+              <li><i class="bi bi-chevron-right"></i> <a href="#services"> Services</a></li>
+            </ul>
+          </div>
+
+          <div class="col-lg-2 col-md-3 footer-links">
+            <h4>Our Services</h4>
+            <ul>
+              <li><i class="bi bi-chevron-right"></i> <a href="#services"> Secure user authentication</a></li>
+              <li><i class="bi bi-chevron-right"></i> <a href="#services"> Real-time trade execution</a></li>
+              <li><i class="bi bi-chevron-right"></i> <a href="#services"> Portfolio tracking</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="copyright">
+      <div class="container text-center">
+        <p>© <span>Copyright</span> <strong class="px-1 sitename">GP</strong> <span>All Rights Reserved</span></p>
+        <div class="credits">
+          <!-- All the links in the footer should remain intact. -->
+          <!-- You can delete the links only if you've purchased the pro version. -->
+          <!-- Licensing information: https://bootstrapmade.com/license/ -->
+          <!-- Purchase the pro version with working PHP/AJAX contact form: [buy-url] -->
+          Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+        </div>
+  
+    </div>
+
+  <!-- Scroll Top -->
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Preloader -->
+  <div id="preloader"></div>
+
+  <!-- Vendor JS Files -->
+  <script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='vendor/php-email-form/validate.js') }}"></script>
+  <script src="{{ url_for('static', filename='vendor/aos/aos.js') }}"></script>
+  <script src="{{ url_for('static', filename='vendor/swiper/swiper-bundle.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='vendor/glightbox/js/glightbox.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='vendor/imagesloaded/imagesloaded.pkgd.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='vendor/isotope-layout/isotope.pkgd.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='vendor/purecounter/purecounter_vanilla.js') }}"></script>
+
+  <!-- Main JS File -->
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+</body>
+</html>

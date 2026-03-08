@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Browse Stocks - Stocker</title>
+
+  <link href="{{ url_for('static', filename='img/logo stocker.png') }}" rel="icon">
+
+  <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+  <link href="{{ url_for('static', filename='vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
+  <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet">
+
+  <style>
+
+    .content-section{
+      margin-top:100px;
+    }
+
+    .curved-container{
+      background:#f8f9fa;
+      border-radius:20px;
+      padding:30px;
+      box-shadow:0 4px 8px rgba(0,0,0,0.1);
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+<header class="header d-flex align-items-center fixed-top">
+
+  <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
+
+```
+<a class="logo d-flex align-items-center">
+  <img src="{{ url_for('static', filename='img/logo stocker.png') }}">
+  <h1 class="sitename">STOCKER</h1>
+  <span>.</span>
+</a>
+
+<nav class="navmenu d-flex align-items-center">
+
+  <ul class="d-flex align-items-center mb-0">
+
+    <li>
+      <a href="{{ url_for('dashboard_trader') }}">Dashboard</a>
+    </li>
+
+    <li>
+      <a href="{{ url_for('service05') }}">My Portfolio</a>
+    </li>
+
+  </ul>
+
+  <a href="{{ url_for('logout') }}" class="btn btn-danger ms-4 px-4 py-2 rounded">
+    Logout
+  </a>
+
+</nav>
+```
+
+  </div>
+
+</header>
+
+<main class="container content-section">
+
+<div class="curved-container">
+
+<div class="row mb-4">
+<div class="col-12">
+
+<h2>Available Stocks</h2>
+<p>Browse available stocks and trade instantly.</p>
+
+</div>
+</div>
+
+<div class="table-responsive">
+
+<table class="table table-hover">
+
+<thead class="table-dark">
+
+<tr>
+
+<th>Symbol</th>
+<th>Name</th>
+<th>Price</th>
+<th>Sector</th>
+<th>Industry</th>
+<th>Actions</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for stock in stocks %}
+
+<tr>
+
+<td>{{ stock.symbol }}</td>
+<td>{{ stock.name }}</td>
+<td>₹{{ stock.price }}</td>
+<td>{{ stock.sector }}</td>
+<td>{{ stock.industry }}</td>
+
+<td>
+
+<a href="{{ url_for('buy_stock', stock_id=stock.id) }}"
+class="btn btn-sm btn-success">
+Buy </a>
+
+<a href="{{ url_for('sell_stock', stock_id=stock.id) }}"
+class="btn btn-sm btn-danger">
+Sell </a>
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</main>
+
+</body>
+</html>

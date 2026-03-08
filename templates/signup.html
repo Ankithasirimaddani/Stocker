@@ -1,0 +1,57 @@
+<!-- templates/signup.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>Signup - Stocker</title>
+
+  <!-- Favicons -->
+  <link href="{{ url_for('static', filename='img/logo stocker.png') }}" rel="icon" />
+
+  <!-- Fonts & CSS --> 
+  <link href="https://fonts.googleapis.com" rel="preconnect" />
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&family=Poppins&family=Raleway&display=swap" rel="stylesheet" />
+
+  <!-- Vendor & Main CSS -->
+   
+  <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" />
+  <link href="{{ url_for('static', filename='vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet" />
+  <link href="{{ url_for('static', filename='vendor/aos/aos.css') }}" rel="stylesheet" />
+  <link href="{{ url_for('static', filename='vendor/swiper/swiper-bundle.min.css') }}" rel="stylesheet" />
+  <link href="{{ url_for('static', filename='vendor/glightbox/css/glightbox.min.css') }}" rel="stylesheet" />
+  <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet" />
+</head>
+<body>
+  <div class="container mt-5">
+    <h2 class="text-center mb-4">Create an Account</h2>
+    <form method="POST" action="/signup" class="mx-auto" style="max-width: 400px;">
+      <div class="mb-3">
+        <label for="role" class="form-label">Select Role</label>
+        <select class="form-select" id="role" name="role" required>
+          <option value="" disabled selected>Select your role</option>
+          <option value="trader">Trader</option>
+          <option value="admin">Admin</option>
+        </select>
+      </div>
+      <div class="form-group mb-3">
+        <label>Username</label>
+        <input type="text" name="username" class="form-control" required />
+      </div>
+      <div class="form-group mb-3">
+        <label>Email</label>
+        <input type="email" name="email" class="form-control" required />
+      </div>
+      <div class="form-group mb-3">
+        <label>Password</label>
+        <input type="password" name="password" class="form-control" required />
+      </div>
+      <button type="submit" class="btn btn-success w-100">Sign Up</button>
+    </form>
+    <p class="text-center mt-3">
+      Already have an account? <a href="{{ url_for('login') }}">Login here</a>
+    </p>
+  </div>
+</body>
+</html>
